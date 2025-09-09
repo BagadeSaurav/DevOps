@@ -388,4 +388,183 @@ terraform plan
 ```bash
 terraform apply
 ```
+---
+# 🌐 Terraform Loops & Important Commands
 
+Terraform provides powerful constructs for iterating over collections like lists and maps.
+The primary looping mechanisms are **count**, **for\_each**, and **for**.
+
+---
+
+## ✅ 1️⃣ count
+
+**Definition**:
+The `count` parameter allows you to specify how many instances of a resource to create.
+
+**Usage**:
+Works well for creating identical resources.
+
+### ✅ Example:
+
+```hcl
+resource "aws_instance" "example" {
+  count         = 3
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+}
+```
+
+👉 In this example, **three EC2 instances** are created.
+
+### Accessing Instances:
+
+```hcl
+aws_instance.example[0]  # First instance  
+aws_instance.example[1]  # Second instance  
+aws_instance.example[2]  # Third instance  
+```
+
+---
+
+## ✅ 2️⃣ for\_each
+
+**Definition**:
+The `for_each` meta-argument allows iterating over a **map** or **set** to create resources with distinct properties.
+
+**Usage**:
+Useful when resource properties vary.
+
+### ✅ Example:
+
+```hcl
+provider "aws" {
+  region = "us-west-2"
+}
+
+resource "aws_s3_bucket" "example" {
+  for_each = {
+    dev  = "dev-bucket-unique-1"
+    prod = "prod-bucket-unique-2"
+  }
+
+  bucket = each.value
+}
+```
+
+👉 This creates **two S3 buckets**:
+
+* `dev-bucket-unique-1`
+* `prod-bucket-unique-2`
+
+### Accessing Instances:
+
+```hcl
+aws_s3_bucket.example["dev"]   # Dev bucket  
+aws_s3_bucket.example["prod"]  # Prod bucket  
+```
+
+---
+
+## ✅ 3️⃣ for Expression
+
+**Definition**:
+The `for` expression is used to **transform** or **filter** collections.
+
+**Usage**:
+Commonly used in variables and outputs.
+
+### ✅ Example 1: Transform to Uppercase
+
+```hcl
+variable "names" {
+  default = ["Alice", "Bob", "Charlie"]
+}
+
+output "uppercase_names" {
+  value = [for name in var.names : upper(name)]
+}
+```
+
+👉 Outputs: `["ALICE", "BOB", "CHARLIE"]`
+
+---
+
+### ✅ Example 2: Filter Names Longer Than 3 Characters
+
+```hcl
+output "filtered_names" {
+  value = [for name in var.names : name if length(name) > 3]
+}
+```
+
+👉 Filters names: `["Alice", "Charlie"]`
+
+---
+
+## ✅ Comparison Table
+
+| Feature    | count                  | for\_each                  | for (expression)         |
+| ---------- | ---------------------- | -------------------------- | ------------------------ |
+| Input Type | Number                 | Map or Set                 | List, Map, or Set        |
+| Use Case   | Create identical items | Create unique items        | Transform or filter data |
+| Example    | EC2 instances          | S3 buckets with unique IDs | Modify list of names     |
+
+---
+
+## ✅ Terraform Commands and Provisioners
+
+### ✅ 1️⃣ Taint Command
+
+Marks a resource for **recreation** during the next `terraform apply`.
+
+```bash
+terraform taint <resource_name>
+```
+
+#### Example:
+
+```bash
+terraform taint aws_instance.my_instance
+```
+
+👉 Marks the EC2 instance for recreation.
+
+---
+
+### ✅ 2️⃣ Import Command
+
+Imports existing infrastructure resources into Terraform state.
+
+```bash
+terraform import <resource_type>.<resource_name> <resource_id>
+```
+
+#### Example:
+
+```bash
+terraform import aws_instance.my_instance i-0abcd1234efgh5678
+```
+
+👉 Imports EC2 instance ID `i-0abcd1234efgh5678` as `aws_instance.my_instance`.
+
+---
+
+### ✅ 3️⃣ Destroy Command
+
+Removes all resources defined in the configuration.
+
+```bash
+terraform destroy
+```
+
+#### Targeted Destroy (-target):
+
+```bash
+terraform destroy -target=<resource_type>.<resource_name>
+```
+
+##### Example:
+
+```bash
+terraform destroy -target=aws_instance.my_instance
+```
