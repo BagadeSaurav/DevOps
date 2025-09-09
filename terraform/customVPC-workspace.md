@@ -5,6 +5,7 @@ This repository contains Terraform code to provision **AWS infrastructure** with
 ## 📂 Project Structure  
 
 customVPC-workspace/
+
 ├─ main.tf               
 ├─ variables.tf           
 ├─ workspace/
