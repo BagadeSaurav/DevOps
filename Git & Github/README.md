@@ -1,6 +1,6 @@
 Git & GitHub documentation:
 
-```markdown
+
 # Git & GitHub Complete Documentation
 
 ## 🚀 What is Git?
