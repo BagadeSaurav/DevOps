@@ -1,3 +1,5 @@
+Git & GitHub documentation:
+
 ```markdown
 # Git & GitHub Complete Documentation
 
@@ -247,7 +249,4 @@ project-name/
 | Create PR            | GitHub → Open PR                                               |
 | Sync fork (optional) | `git pull upstream main` → `git push origin main`              |
 
-```
-
-This version provides a comprehensive, structured, and clean README.md ready for use as a learning reference or internal team documentation. It now includes any missing explanations, organized diagrams, tables, and a full example repository structure.
 ```
