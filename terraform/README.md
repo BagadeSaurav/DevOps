@@ -568,3 +568,212 @@ terraform destroy -target=<resource_type>.<resource_name>
 ```bash
 terraform destroy -target=aws_instance.my_instance
 ```
+
+In **Terraform**, a **block** is a container for configuring resources, data sources, providers, modules, and other settings. Below is a comprehensive list of common **Terraform block types** with explanations:
+
+---
+
+### ✅ 1. **terraform block**
+
+* Defines Terraform settings such as backend configuration and required provider versions.
+
+```hcl
+terraform {
+  required_version = ">= 1.3"
+  backend "s3" {
+    bucket = "my-terraform-state"
+    key    = "path/to/statefile"
+    region = "us-east-1"
+  }
+}
+```
+
+---
+
+### ✅ 2. **provider block**
+
+* Configures a provider (e.g., AWS, Azure, Google Cloud).
+
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+```
+
+---
+
+### ✅ 3. **resource block**
+
+* Defines a resource to manage (e.g., EC2 instance, S3 bucket).
+
+```hcl
+resource "aws_instance" "my_instance" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+}
+```
+
+---
+
+### ✅ 4. **data block (Data Source Block)**
+
+* Reads information from external resources without managing them.
+
+```hcl
+data "aws_ami" "latest_amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+```
+
+---
+
+### ✅ 5. **module block**
+
+* Includes reusable Terraform code from local paths or remote registries.
+
+```hcl
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+  version = "3.0.0"
+
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
+}
+```
+
+---
+
+### ✅ 6. **variable block**
+
+* Defines input variables for the configuration.
+
+```hcl
+variable "instance_type" {
+  type        = string
+  description = "EC2 instance type"
+  default     = "t2.micro"
+}
+```
+
+---
+
+### ✅ 7. **output block**
+
+* Defines outputs to show values after `terraform apply`.
+
+```hcl
+output "instance_ip" {
+  value = aws_instance.my_instance.public_ip
+}
+```
+
+---
+
+### ✅ 8. **locals block**
+
+* Defines local variables that are used internally within the configuration.
+
+```hcl
+locals {
+  instance_name = "web-server"
+}
+```
+
+---
+
+### ✅ 9. **backend block**
+
+* Configures remote state storage (usually inside the `terraform {}` block).
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket = "my-terraform-state"
+    key    = "state.tfstate"
+    region = "us-east-1"
+  }
+}
+```
+
+---
+
+### ✅ 10. **provisioner block**
+
+* Executes scripts or commands on resources after creation (use with caution).
+
+```hcl
+resource "aws_instance" "example" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx"
+    ]
+  }
+}
+```
+
+---
+
+### ✅ 11. **dynamic block**
+
+* Generates multiple nested blocks based on complex expressions.
+
+```hcl
+resource "aws_security_group" "example" {
+  name        = "example"
+
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }
+}
+```
+
+---
+
+### ✅ 12. **connection block**
+
+* Specifies SSH or WinRM connection details for provisioners.
+
+```hcl
+connection {
+  type        = "ssh"
+  user        = "ubuntu"
+  private_key = file("~/.ssh/id_rsa")
+  host        = aws_instance.example.public_ip
+}
+```
+
+---
+
+### ✅ Summary Table
+
+| Block Type  | Purpose                                |
+| ----------- | -------------------------------------- |
+| terraform   | Settings (backend, required providers) |
+| provider    | Configure cloud provider               |
+| resource    | Define resources (e.g., EC2, S3)       |
+| data        | Read external resource data            |
+| module      | Reuse code modules                     |
+| variable    | Input variables                        |
+| output      | Output values                          |
+| locals      | Local variables                        |
+| backend     | Remote state config                    |
+| provisioner | Run scripts/commands on resources      |
+| dynamic     | Generate nested blocks dynamically     |
+| connection  | Define SSH/WinRM connection info       |
+
+---
