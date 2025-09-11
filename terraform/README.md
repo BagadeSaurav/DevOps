@@ -777,3 +777,199 @@ connection {
 | connection  | Define SSH/WinRM connection info       |
 
 ---
+
+# 🌟 Terraform Loops & Commands Documentation
+
+## ✅ Terraform Loop Concepts
+
+Terraform provides powerful constructs for iterating over collections such as **lists** and **maps**.
+The primary looping mechanisms are:
+
+1. `count`
+2. `for_each`
+3. `for` expression
+
+---
+
+### 🔧 1️⃣. `count`
+
+#### 📚 Definition:
+
+The `count` meta-argument allows you to specify how many instances of a resource to create.
+It works well for creating **identical resources**.
+
+#### ✅ Example:
+
+```hcl
+resource "aws_instance" "example" {
+  count         = 3
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+}
+```
+
+👉 This creates **three identical EC2 instances**.
+
+#### ✅ Accessing Instances:
+
+```hcl
+aws_instance.example[0]  # First instance
+aws_instance.example[1]  # Second instance
+aws_instance.example[2]  # Third instance
+```
+
+---
+
+### 🔧 2️⃣. `for_each`
+
+#### 📚 Definition:
+
+The `for_each` meta-argument allows iterating over **map or set types** to create resources with **distinct properties**.
+
+#### ✅ Example:
+
+```hcl
+provider "aws" {
+  region = "us-west-2"
+}
+
+resource "aws_s3_bucket" "example" {
+  for_each = {
+    dev  = "dev-bucket-unique-1"
+    prod = "prod-bucket-unique-2"
+  }
+
+  bucket = each.value
+}
+```
+
+👉 This creates **two S3 buckets**:
+
+* `dev-bucket-unique-1`
+* `prod-bucket-unique-2`
+
+#### ✅ Accessing Instances:
+
+```hcl
+aws_s3_bucket.example["dev"]   # Dev bucket
+aws_s3_bucket.example["prod"]  # Prod bucket
+```
+
+---
+
+### 🔧 3️⃣. `for` Expression
+
+#### 📚 Definition:
+
+The `for` expression is used to **transform or filter collections**.
+It is commonly used in variables and outputs.
+
+#### ✅ Example — Transformation:
+
+```hcl
+variable "names" {
+  default = ["Alice", "Bob", "Charlie"]
+}
+
+output "uppercase_names" {
+  value = [for name in var.names : upper(name)]
+}
+```
+
+👉 Output:
+
+```hcl
+["ALICE", "BOB", "CHARLIE"]
+```
+
+#### ✅ Example — Filtering:
+
+```hcl
+output "filtered_names" {
+  value = [for name in var.names : name if length(name) > 3]
+}
+```
+
+👉 Output:
+
+```hcl
+["Alice", "Charlie"]
+```
+
+---
+
+## ✅ Comparison Table
+
+| Feature    | count                  | for\_each                  | for Expression           |
+| ---------- | ---------------------- | -------------------------- | ------------------------ |
+| Input Type | Number                 | Map or Set                 | List, Map, or Set        |
+| Use Case   | Create identical items | Create unique items        | Transform or filter data |
+| Example    | EC2 Instances          | S3 Buckets with unique IDs | Modify list of names     |
+
+---
+
+## ✅ Terraform Commands
+
+---
+
+### 1️⃣. **Taint Command**
+
+Marks a resource for recreation on next apply.
+
+* 🔧 Syntax:
+
+  ```bash
+  terraform taint <resource_name>
+  ```
+
+* ✅ Example:
+
+  ```bash
+  terraform taint aws_instance.my_instance
+  ```
+
+---
+
+### 2️⃣. **Import Command**
+
+Import existing resources into Terraform state.
+
+* 🔧 Syntax:
+
+  ```bash
+  terraform import <resource_type>.<resource_name> <resource_id>
+  ```
+
+* ✅ Example:
+
+  ```bash
+  terraform import aws_instance.my_instance i-0abcd1234efgh5678
+  ```
+
+---
+
+### 3️⃣. **Destroy Command**
+
+Destroys all resources or specific ones using `-target`.
+
+* 🔧 Syntax (full destroy):
+
+  ```bash
+  terraform destroy
+  ```
+
+* 🔧 Syntax (targeted destroy):
+
+  ```bash
+  terraform destroy -target=<resource_type>.<resource_name>
+  ```
+
+* ✅ Example:
+
+  ```bash
+  terraform destroy -target=aws_instance.my_instance
+  ```
+
+
+
+
