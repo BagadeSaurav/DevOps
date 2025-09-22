@@ -1,6 +1,3 @@
-Here’s a **clean, step-by-step documentation** for your setup in Markdown format. I’ve organized it for clarity and ease of use:
-
----
 
 # EasyCRUD Docker Deployment Documentation
 
