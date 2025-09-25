@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                git branch: 'main', url: 'https://github.com/BagadeSaurav/EasyCRUD-docker.git'
+                sh '''
+                    cd backend
+                    rm -rf target
+                    mvn clean install -DskipTests
+                '''
+            }
+        }
+
+        stage('Upload to S3') {
+            steps {
+                s3Upload consoleLogLevel: 'INFO',
+                    dontSetBuildResultOnFailure: false,
+                    dontWaitForConcurrentBuildCompletion: false,
+                    entries: [[
+                        bucket: 'jenksb',
+                        excludedFile: '',
+                        flatten: false,
+                        gzipFiles: false,
+                        keepForever: false,
+                        managedArtifacts: false,
+                        noUploadOnFailure: false,
+                        selectedRegion: 'ap-south-1',  // region must match your S3 bucket
+                        showDirectlyInBrowser: false,
+                        sourceFile: 'backend/*',
+                        storageClass: 'STANDARD',
+                        uploadFromSlave: false,
+                        useServerSideEncryption: false
+                    ]],
+                    pluginFailureResultConstraint: 'FAILURE',
+                    profileName: 'saurav bagade',     // must exist in Jenkins S3 profiles
+                    userMetadata: []                  // required, even if empty
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy step will go here...'
+            }
+        }
+    }
+}
