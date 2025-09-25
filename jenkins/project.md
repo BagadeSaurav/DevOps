@@ -178,6 +178,34 @@ pipeline {
                 '''
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv(credentialsId: 'sonar-qube-server', installationName: 'sonar-qube-server') {
+                    sh '''
+                    cd backend
+                    mvn sonar:sonar \
+                      -Dsonar.projectKey=studentapp \
+                      -Dsonar.projectName=studentapp \
+                      -Dsonar.login=$SONAR_AUTH_TOKEN
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Final deployment stage'
+            }
+        }
     }
 }
 ```
