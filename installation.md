@@ -51,6 +51,52 @@ It will ask for:
 * **AWS Secret Access Key**
 * **Default region name** (e.g., `ap-south-1` for Mumbai)
 ----------
+
+# 🚀 Install Git on Ubuntu
+
+### **Step 1: Update System Packages**
+
+```bash
+sudo apt update -y
+sudo apt upgrade -y
+```
+
+---
+
+### **Step 2: Install Git**
+
+```bash
+sudo apt install git -y
+```
+
+---
+
+### **Step 3: Verify Installation**
+
+```bash
+git --version
+```
+
+✅ Example output: `git version 2.41.0`
+
+---
+
+### **Step 4: Configure Git (Optional but Recommended)**
+
+Set your **username** and **email** for commits:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+Check configuration:
+
+```bash
+git config --list
+```
+
+------------------
 Install Docker on Ubuntu
 
 ```bash
