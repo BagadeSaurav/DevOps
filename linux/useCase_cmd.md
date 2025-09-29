@@ -1005,3 +1005,204 @@ zip -r project.zip /home/user/project/
 | `zip`   | Widely used, compresses multiple files/directories (Windows compatible). |
 
 ---
+
+# ⚙️ Process Management in Linux
+
+A **process** is a running instance of a program.  
+Linux provides multiple commands to **view, control, and manage processes**.
+
+---
+
+## **1. Viewing Processes**
+
+### 🔹 `ps` – Process Status
+Shows running processes for the current user/session.
+
+**Examples**
+```bash
+ps                # List processes in the current shell
+ps -e             # List all processes
+ps -f             # Full format (UID, PID, PPID, start time, etc.)
+ps -ef            # List all processes in full format
+ps aux            # Show all processes (BSD style)
+````
+
+---
+
+### 🔹 `top` – Real-Time Process Monitoring
+
+Interactive tool to monitor CPU/memory usage of processes.
+
+**Examples**
+
+```bash
+top               # Open real-time process view
+top -u username   # Show processes of a specific user
+```
+
+Controls inside `top`:
+
+* `q` → quit
+* `k` → kill a process
+* `h` → help
+* `M` → sort by memory usage
+* `P` → sort by CPU usage
+
+---
+
+### 🔹 `htop` – Improved `top` (if installed)
+
+Colorful, interactive process viewer (easier than `top`).
+
+```bash
+htop
+```
+
+---
+
+### 🔹 `pgrep` – Search for Processes
+
+Finds PIDs by process name.
+
+**Examples**
+
+```bash
+pgrep firefox      # Find PID(s) of firefox
+pgrep -u user1     # List processes owned by a user
+```
+
+---
+
+## **2. Managing Processes**
+
+### 🔹 `kill` – Terminate Process by PID
+
+Sends a signal to a process (default: `SIGTERM`).
+
+**Examples**
+
+```bash
+kill 1234           # Kill process with PID 1234
+kill -9 1234        # Force kill (SIGKILL)
+kill -15 1234       # Graceful stop (SIGTERM)
+```
+
+---
+
+### 🔹 `pkill` – Kill by Process Name
+
+Kills processes by name instead of PID.
+
+**Examples**
+
+```bash
+pkill firefox       # Kill all firefox processes
+pkill -u user1      # Kill all processes of user1
+```
+
+---
+
+### 🔹 `jobs` – List Background Jobs
+
+Shows jobs started in the current terminal.
+
+```bash
+jobs
+```
+
+---
+
+### 🔹 `fg` – Bring Job to Foreground
+
+```bash
+fg %1
+```
+
+(Brings job ID 1 to foreground)
+
+---
+
+### 🔹 `bg` – Resume Job in Background
+
+```bash
+bg %1
+```
+
+---
+
+### 🔹 `nice` & `renice` – Process Priority
+
+Processes have a **priority value (niceness)** from **-20 (highest priority) to 19 (lowest priority)**.
+
+**Examples**
+
+```bash
+nice -n 10 ./script.sh   # Start script with lower priority
+renice -n -5 -p 1234     # Change priority of PID 1234 to -5
+```
+
+---
+
+## **3. Process States**
+
+* **R** → Running
+* **S** → Sleeping (waiting for event)
+* **D** → Uninterruptible sleep (usually I/O)
+* **T** → Stopped (paused)
+* **Z** → Zombie (terminated but not cleaned)
+
+---
+
+## **4. Real-World Use Cases**
+
+✅ **Find and kill a process using name**
+
+```bash
+pgrep -f "python app.py"
+kill -9 <PID>
+```
+
+✅ **Check memory-hungry processes**
+
+```bash
+top -o %MEM
+```
+
+✅ **Run a process in the background**
+
+```bash
+./long_script.sh &
+```
+
+✅ **Check background jobs and bring one back**
+
+```bash
+jobs
+fg %2
+```
+
+✅ **Start a program with low CPU priority**
+
+```bash
+nice -n 15 tar -czf backup.tar.gz /home/user/
+```
+
+---
+
+## **Cheat Sheet**
+
+| Command  | Purpose                             |
+| -------- | ----------------------------------- |
+| `ps`     | Show running processes              |
+| `top`    | Real-time monitoring                |
+| `htop`   | Interactive monitoring (better top) |
+| `pgrep`  | Find PID by name                    |
+| `kill`   | Kill by PID                         |
+| `pkill`  | Kill by name                        |
+| `jobs`   | Show background jobs                |
+| `fg`     | Bring job to foreground             |
+| `bg`     | Resume job in background            |
+| `nice`   | Start with priority                 |
+| `renice` | Change priority of running process  |
+
+---
