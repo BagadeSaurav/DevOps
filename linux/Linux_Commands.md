@@ -1,6 +1,7 @@
 Linux Commands
 
-1. File & Directory Management
+ 1File & Directory Management
+
 | Command    | Description                                    | Example                           |
 | ---------- | ---------------------------------------------- | --------------------------------- |
 | `pwd`      | Show current directory path                    | `pwd`                             |
