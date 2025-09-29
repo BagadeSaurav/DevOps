@@ -510,3 +510,154 @@ For high availability of the director itself, implement Keepalived alongside LVS
 Maintenance and monitoring involve regularly checking the status of virtual services and real servers using `ipvsadm -L -n`, configuring comprehensive health checks to detect and remove failed servers from the pool, implementing proper logging for troubleshooting, and developing procedures for adding or removing servers without disrupting active connections. For complex environments, consider implementing a management layer above the basic LVS functionality to simplify configuration and provide better visibility into the load balancing system.
 
 ---
+
+# 🐧 Linux Overview & Architecture
+
+## **Linux Architecture**
+
+### **1. Hardware Layer**
+- **What it is**: The physical components — CPU, RAM, storage devices, network cards, etc.
+- **Role**: Executes instructions and stores data for the OS to use.
+- **Examples**: Intel/AMD processors, SSDs, GPUs.
+
+---
+
+### **2. Kernel Layer**
+- **What it is**: The **core** of Linux, managing communication between hardware and software.
+- **Main Responsibilities**:
+  - **Process Management** – Creating, scheduling, and terminating processes.
+  - **Memory Management** – Allocating and freeing RAM.
+  - **Device Management** – Handling device drivers.
+  - **File System Management** – Managing data storage and retrieval.
+  - **Networking** – Managing network communication.
+
+---
+
+### **3. System Library Layer**
+- **What it is**: Special functions/programs that **applications use to communicate with the kernel** (without dealing with hardware directly).
+- **Examples**:
+  - **glibc** (GNU C Library)
+  - System calls (`open()`, `read()`, `write()`)
+- **Role**: Provide a safe, standardized way for apps to request system resources.
+
+---
+
+### **4. User Space Layer**
+- **Shell** – CLI interface for the user (`bash`, `zsh`, etc.).
+- **Applications** – User programs (web browsers, text editors, compilers, etc.).
+- **GUI** – Optional desktop environments (GNOME, KDE, XFCE).
+
+---
+
+### **Architecture Diagram**
+```
+
++-----------------------+
+|  Applications & GUI   |  ← User Space (You interact here)
+|  (Browsers, Editors)  |
++-----------------------+
+|  Shell & Utilities    |
++-----------------------+
+|  System Libraries     |  ← Interface to Kernel
+|  (glibc, API calls)   |
++-----------------------+
+|        Kernel         |  ← Controls Hardware
+| (Process, Memory, FS) |
++-----------------------+
+|       Hardware        |
+| (CPU, RAM, Devices)   |
++-----------------------+
+
+```
+
+---
+
+## **What is Linux?**
+Linux is an **open-source, Unix-like operating system kernel** first created by **Linus Torvalds** in **1991**.  
+It’s not a complete OS by itself — the **Linux kernel** is the *core* that manages your computer’s hardware and acts as a bridge between hardware and software.
+
+Because Linux is **open-source**, anyone can view, modify, and share its source code. 
+This has led to thousands of variations called **Linux distributions (distros)**, tailored for desktops, servers, mobile devices, and embedded systems.
+
+---
+
+## **Linux as an Operating System**
+When people say **“Linux”**, they often mean a **Linux-based OS**, which includes:
+1. **Linux Kernel** – The heart of the OS.
+2. **GNU Tools** – File management, compilers, editors, etc.
+3. **Shell** – Command-line interface (`bash`).
+4. **Graphical User Interface (GUI)** – Optional desktop environments.
+5. **Applications** – Browsers, IDEs, office suites, etc.
+
+**Popular Linux Distros:**
+- **Ubuntu** – User-friendly, beginner-friendly.
+- **Debian** – Stable, widely used for servers.
+- **Fedora** – Cutting-edge features.
+- **RHEL** – Enterprise-focused.
+- **Arch Linux** – Minimal, highly customizable.
+- **Kali Linux** – Security testing & ethical hacking.
+
+---
+
+## **Why Linux Is Popular**
+- ✅ **Free & Open Source** – No licensing fees.
+- ✅ **Security** – Strong permissions and fewer malware threats.
+- ✅ **Stability & Performance** – Great for servers.
+- ✅ **Flexibility** – Runs on desktops, servers, phones, IoT, supercomputers.
+- ✅ **Community Support** – Huge ecosystem and active forums.
+
+---
+
+## **Linux vs Windows vs Unix**
+
+| Feature / Aspect          | **Linux**                                                    | **Windows**                                                   | **Unix**                                                  |
+| ------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------- | --------------------------------------------------------- |
+| **Type**                  | Open-source, Unix-like OS                                    | Proprietary OS by Microsoft                                   | Proprietary OS family (original AT\&T Bell Labs)          |
+| **Kernel**                | Monolithic (Linux Kernel)                                    | Hybrid Kernel (Windows NT)                                    | Monolithic (varies by Unix variant)                       |
+| **Source Code**           | Free & open-source (GPL license)                             | Closed source                                                 | Mostly closed source (some open variants like BSD)        |
+| **Cost**                  | Free (some enterprise distros have paid support)             | Paid license (Windows Home, Pro, Server)                      | Expensive commercial licenses (Solaris, AIX, HP-UX)       |
+| **User Interface**        | CLI + GUI (GNOME, KDE, XFCE)                                 | GUI-focused (Windows Explorer), limited CLI (PowerShell, CMD) | Mostly CLI, some GUIs for modern variants                 |
+| **Performance**           | Very lightweight to heavy, customizable                      | Resource-heavy                                                | Generally stable but less flexible than Linux             |
+| **Security**              | Strong permission model, fewer malware threats               | Frequent malware/virus attacks, requires antivirus            | Strong security, but updates may be slow for some vendors |
+| **Portability**           | Runs on almost any hardware (from IoT to supercomputers)     | Runs mainly on x86/x64 PC hardware                            | Hardware-specific (depends on vendor)                     |
+| **Usage**                 | Servers, desktops, embedded systems, cloud, mobile (Android) | Personal computers, business desktops, some servers           | Mission-critical servers, mainframes, industrial systems  |
+| **Example Distributions** | Ubuntu, Red Hat, Debian, Arch, Kali                          | Windows 10, 11, Windows Server                                | Solaris, AIX, HP-UX                                       |
+| **Development Tools**     | Rich open-source ecosystem, easy for developers              | Requires proprietary tools (Visual Studio, etc.)              | Vendor-specific tools, less open development              |
+| **Updates**               | Rolling or scheduled releases, user-controlled               | Automatic or scheduled via Windows Update                     | Vendor-supplied patches, slower release cycles            |
+
+---
+
+## **Remote Access Tools**
+- **SSH (Secure Shell)** – Encrypts remote access.
+  - Linux/Mac: `ssh user@server_ip`
+  - Windows:
+    - PowerShell: `ssh user@server_ip`
+    - **PuTTY** – GUI SSH/Telnet client.
+
+---
+
+## **Kernel, Bootloader, and Shell**
+
+### **1. Kernel**
+- **Core of OS** – Manages hardware & software.
+- **Responsibilities**: Process management, memory management, device drivers, security.
+- **Analogy**: Like the **engine** of a car.
+
+---
+
+### **2. Bootloader**
+- **Loads the kernel into RAM** after system startup.
+- **Examples**: GRUB (Linux), LILO (old), Windows Boot Manager.
+- **Analogy**: Like a **librarian fetching the book** (OS) from storage.
+
+---
+
+### **3. Shell**
+- **Interface between user & OS**.
+- **Types**:
+  - CLI: `bash`, `zsh`, `fish`
+  - GUI: GNOME Shell, KDE Plasma
+- **Analogy**: Like a **translator** between human commands and the machine.
+
+---
+```
