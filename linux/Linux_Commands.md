@@ -71,6 +71,7 @@ Linux Commands
 
 
 5. User & Group Management
+   
 | Command               | Description                        | Example                                                                |
 | --------------------- | ---------------------------------- | ---------------------------------------------------------------------- |
 | `whoami`              | Show current logged-in user        | `whoami` → `john`                                                      |
@@ -312,5 +313,199 @@ exmaple
 | `faillog`   | Show failed logins                   |
 | `passwd -l` | Lock user account                    |
 | `passwd -u` | Unlock user account                  |
+
+---
+
+# 🗂️ Linux Directory Structure Overview
+
+Linux uses a **hierarchical directory structure** (tree-like) with `/` (root) at the top.  
+Every file and directory starts from the **root directory**.
+
+# View file structure
+
+```bash
+apt install tree
+````
+---
+
+## **1. / (Root)**
+- **Description**: The top-level directory in Linux.
+- **Contains**: All other directories and system files.
+- **Example**:
+```bash
+ls /
+````
+
+* Output: `bin boot dev etc home lib media mnt opt proc root run sbin srv tmp usr var`
+
+---
+
+## **2. /bin** – Essential User Binaries
+
+* Contains **essential commands** used by all users.
+* Examples: `ls`, `cp`, `mv`, `cat`, `bash`
+
+---
+
+## **3. /sbin** – System Binaries
+
+* Contains **administrative commands** used by the root user.
+* Examples: `ifconfig`, `iptables`, `shutdown`, `fdisk`
+
+---
+
+## **4. /etc** – Configuration Files
+
+* System-wide **configuration files**.
+* Examples: `passwd`, `hosts`, `fstab`, `ssh/sshd_config`
+* Typically **not executable**.
+
+---
+
+## **5. /home** – User Home Directories
+
+* Contains **personal directories** for users.
+* Example:
+
+```bash
+/home/alice
+/home/bob
+```
+
+---
+
+## **6. /root** – Root User Home
+
+* **Home directory** of the `root` user.
+* Not to be confused with `/` (root of filesystem).
+
+---
+
+## **7. /lib & /lib64** – Shared Libraries
+
+* Contains **shared libraries** required by system programs.
+* Examples: `/lib/libc.so.6`, `/lib64/ld-linux-x86-64.so.2`
+
+---
+
+## **8. /usr** – User Programs & Data
+
+* Contains **installed applications and files** for users.
+* Subdirectories:
+
+  * `/usr/bin` → Non-essential user commands
+  * `/usr/sbin` → Non-essential system commands
+  * `/usr/lib` → Libraries
+  * `/usr/share` → Shared data (docs, man pages, icons)
+
+---
+
+## **9. /var** – Variable Data
+
+* Contains **files that change frequently**:
+
+  * Logs → `/var/log/`
+  * Spools → `/var/spool/`
+  * Databases → `/var/lib/`
+* Example:
+
+```bash
+tail -f /var/log/syslog
+```
+
+---
+
+## **10. /tmp** – Temporary Files
+
+* Stores **temporary files** created by users or applications.
+* Often cleared on reboot.
+
+---
+
+## **11. /boot** – Boot Files
+
+* Contains **kernel and bootloader files**.
+* Examples: `vmlinuz`, `initrd.img`, `grub/`
+
+---
+
+## **12. /dev** – Device Files
+
+* Contains **device nodes** representing hardware.
+* Examples: `/dev/sda`, `/dev/tty`, `/dev/null`
+
+---
+
+## **13. /proc** – Virtual Filesystem for Processes
+
+* Provides **runtime system information**.
+* Examples: `/proc/cpuinfo`, `/proc/meminfo`, `/proc/<pid>/`
+
+---
+
+## **14. /sys** – Kernel Information
+
+* Virtual filesystem exposing **kernel-related info**.
+* Example:
+
+```bash
+ls /sys/class/net
+```
+
+* Shows network interfaces.
+
+---
+
+## **15. /media & /mnt** – Mount Points
+
+* `/media` → Removable media (USB, CD-ROM)
+* `/mnt` → Temporary mount points for manually mounted devices
+
+---
+
+## **16. /opt** – Optional Software
+
+* For **third-party applications**.
+* Examples: `/opt/google`, `/opt/eclipse`
+
+---
+
+## **17. /srv** – Service Data
+
+* Stores **data for services** like web or FTP.
+* Example: `/srv/www`, `/srv/ftp`
+
+---
+
+## **18. /run** – Runtime Data
+
+* Stores **temporary runtime files** (PIDs, sockets).
+* Cleared on reboot.
+
+---
+
+## **Quick Directory Cheat Sheet**
+
+| Directory         | Purpose                                  |
+| ----------------- | ---------------------------------------- |
+| `/`               | Root of filesystem                       |
+| `/bin`            | Essential user binaries                  |
+| `/sbin`           | System binaries (root-only)              |
+| `/etc`            | Configuration files                      |
+| `/home`           | User home directories                    |
+| `/root`           | Root user home directory                 |
+| `/lib` & `/lib64` | Shared libraries                         |
+| `/usr`            | User programs & libraries                |
+| `/var`            | Variable files (logs, spools, databases) |
+| `/tmp`            | Temporary files                          |
+| `/boot`           | Bootloader & kernel files                |
+| `/dev`            | Device files                             |
+| `/proc`           | Process & system info                    |
+| `/sys`            | Kernel info                              |
+| `/media`          | Removable media mount points             |
+| `/mnt`            | Temporary mount points                   |
+| `/opt`            | Optional software                        |
+| `/srv`            | Service data                             |
+| `/run`            | Runtime files                            |
 
 ---
