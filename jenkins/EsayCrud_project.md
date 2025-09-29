@@ -1,5 +1,4 @@
-
-# EasyCRUD Docker Deployment Documentation
+# EasyCRUD Deployment Documentation
 
 ## Overview
 
