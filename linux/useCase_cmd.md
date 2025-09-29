@@ -777,4 +777,231 @@ vim *.txt
 
 ---
 
+# 📦 Archiving & Compression in Linux
+
+Archiving and compression are used to **bundle multiple files into one** and/or **reduce file size**.  
+Common tools: `tar`, `gzip`, `bzip2`, `xz`, `zip`, `unzip`.
+
+---
+
+## **1. `tar` (Tape Archive)**
+
+The `tar` command is mainly used for **archiving multiple files/folders into a single file** (with or without compression).
+
+### **Syntax**
+```bash
+tar [options] archive_name.tar files...
+````
+
+### **Options**
+
+* `-c` → Create archive
+* `-x` → Extract archive
+* `-v` → Verbose (show progress)
+* `-f` → File name
+* `-z` → Use gzip compression
+* `-j` → Use bzip2 compression
+* `-J` → Use xz compression
+
+---
+
+### **Examples**
+
+✅ **Create an archive (no compression)**
+
+```bash
+tar -cvf backup.tar file1.txt file2.txt dir1/
 ```
+
+✅ **Extract an archive**
+
+```bash
+tar -xvf backup.tar
+```
+
+✅ **Create a gzip-compressed archive**
+
+```bash
+tar -czvf backup.tar.gz file1.txt file2.txt dir1/
+```
+
+✅ **Extract a gzip-compressed archive**
+
+```bash
+tar -xzvf backup.tar.gz
+```
+
+✅ **Create a bzip2-compressed archive**
+
+```bash
+tar -cjvf backup.tar.bz2 file1.txt file2.txt
+```
+
+✅ **Extract a bzip2 archive**
+
+```bash
+tar -xjvf backup.tar.bz2
+```
+
+✅ **Create an xz-compressed archive**
+
+```bash
+tar -cJvf backup.tar.xz dir1/
+```
+
+✅ **Extract an xz archive**
+
+```bash
+tar -xJvf backup.tar.xz
+```
+
+✅ **List contents of a tar archive**
+
+```bash
+tar -tvf backup.tar
+```
+
+---
+
+## **2. gzip / gunzip**
+
+`gzip` compresses files, while `gunzip` extracts them.
+It works only on **single files**, not directories.
+
+✅ **Compress a file**
+
+```bash
+gzip file.txt
+```
+
+* Output → `file.txt.gz`
+
+✅ **Decompress a file**
+
+```bash
+gunzip file.txt.gz
+```
+
+✅ **Keep original file while compressing**
+
+```bash
+gzip -k file.txt
+```
+
+---
+
+## **3. bzip2 / bunzip2**
+
+`bzip2` provides **better compression** than `gzip` but is slower.
+
+✅ **Compress**
+
+```bash
+bzip2 file.txt
+```
+
+* Output → `file.txt.bz2`
+
+✅ **Decompress**
+
+```bash
+bunzip2 file.txt.bz2
+```
+
+---
+
+## **4. xz / unxz**
+
+`xz` provides **highest compression ratio** (better than gzip/bzip2).
+
+✅ **Compress**
+
+```bash
+xz file.txt
+```
+
+* Output → `file.txt.xz`
+
+✅ **Decompress**
+
+```bash
+unxz file.txt.xz
+```
+
+✅ **Keep original file**
+
+```bash
+xz -k file.txt
+```
+
+---
+
+## **5. zip & unzip**
+
+Unlike `gzip`, `zip` can **compress multiple files/folders** into one archive.
+
+✅ **Compress files into zip**
+
+```bash
+zip archive.zip file1.txt file2.txt
+```
+
+✅ **Compress a directory**
+
+```bash
+zip -r project.zip project_folder/
+```
+
+✅ **Extract a zip file**
+
+```bash
+unzip archive.zip
+```
+
+✅ **List contents without extracting**
+
+```bash
+unzip -l archive.zip
+```
+
+---
+
+## **6. Real-World Use Cases**
+
+✅ **Backup a project directory**
+
+```bash
+tar -czvf project_backup.tar.gz /home/user/project/
+```
+
+✅ **Extract a software package**
+
+```bash
+tar -xzvf software.tar.gz
+```
+
+✅ **Compress logs before sending**
+
+```bash
+gzip access.log
+```
+
+✅ **Share project as zip (cross-platform)**
+
+```bash
+zip -r project.zip /home/user/project/
+```
+
+---
+
+## **Cheat Sheet**
+
+| Tool    | Best For                                                                 |
+| ------- | ------------------------------------------------------------------------ |
+| `tar`   | Archiving multiple files into one (with/without compression).            |
+| `gzip`  | Fast single-file compression.                                            |
+| `bzip2` | Better compression ratio, slower.                                        |
+| `xz`    | Best compression ratio, slowest.                                         |
+| `zip`   | Widely used, compresses multiple files/directories (Windows compatible). |
+
+---
